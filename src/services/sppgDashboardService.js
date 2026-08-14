@@ -37,3 +37,4 @@ export const createSppgMealDocumentation = async ({
 
 export const getSppgMealDocumentation = () => api.get('/sppg/meals/documentation')
 export const getSppgMenus = (sppgId) => api.get(`/menu/${sppgId}`)
+export const getCvAnalysis = (docId) => api.get(`/dokumentasi/${docId}/analysis`)

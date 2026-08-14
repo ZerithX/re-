@@ -21,6 +21,14 @@
 	background: #22c55e;
 }
 
+.map-dot-sppg-flagged {
+	background: #ef4444;
+}
+
+.map-dot-sppg-partial {
+	background: #eab308;
+}
+
 .map-dot-school {
 	background: #2563eb;
 }

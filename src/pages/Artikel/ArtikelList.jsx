@@ -28,7 +28,7 @@ function ArticleImage({ src, alt, className }) {
   if (!imageUrl) {
     return (
       <div className={`flex items-center justify-center bg-slate-100 text-xs font-bold text-slate-400 ${className}`}>
-        SIMBA
+        SIGIZI
       </div>
     );
   }

@@ -9,7 +9,7 @@ function FAQ() {
     },
     {
       question: 'Siapa saja yang memiliki akses ke data platform?',
-      answer: 'Platform SIMBA dapat diakses oleh masyarakat umum dan orang tua siswa secara terbuka untuk memantau menu serta gizi anak. Selain itu, akses khusus (dashboard) diberikan kepada pengelola dapur SPPG dan pihak sekolah untuk kebutuhan pelaporan dan operasional program MBG.',
+      answer: 'Platform SIGIZI dapat diakses oleh masyarakat umum dan orang tua siswa secara terbuka untuk memantau menu serta gizi anak. Selain itu, akses khusus (dashboard) diberikan kepada pengelola dapur SPPG dan pihak sekolah untuk kebutuhan pelaporan dan operasional program MBG.',
     },
     {
       question: 'Dari mana sumber data menu dan dapur ini berasal?',

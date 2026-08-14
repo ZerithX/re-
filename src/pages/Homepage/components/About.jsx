@@ -116,7 +116,7 @@ export default function About() {
       <div className="mx-auto flex max-w-[1280px] flex-col gap-10 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-4">
           <h2 className="text-center text-4xl font-bold text-slate-900">
-            SIMBA : Membangun Kepercayaan Melalui Transparansi
+            SIGIZI : Membangun Kepercayaan Melalui Transparansi
           </h2>
           <p className="mx-auto max-w-4xl text-center text-base leading-7 text-slate-600">
             Platform ini menyediakan akses terbuka bagi publik untuk memantau

@@ -35,7 +35,7 @@ function ArticleImage({ src, alt, className }) {
   if (!imageUrl) {
     return (
       <div className={`flex items-center justify-center bg-slate-100 text-sm font-bold text-slate-400 ${className}`}>
-        SIMBA
+        SIGIZI
       </div>
     );
   }
@@ -210,7 +210,7 @@ export default function ArtikelDetail() {
                     <span className="flex h-10 w-10 items-center justify-center rounded-full bg-sky-100 text-[#136DEC]">
                       <FiUser className="h-5 w-5" />
                     </span>
-                    <span>{getDisplayValue(article.author || "Tim SIMBA")}</span>
+                    <span>{getDisplayValue(article.author || "Tim SIGIZI")}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <FiCalendar className="h-5 w-5 text-slate-500" />

@@ -13,8 +13,8 @@ export default function Navbar() {
         <div className="flex h-14 items-center justify-between">
           <div className="flex items-center space-x-4">
             <Link to="/" className="flex items-center space-x-3" onClick={closeMobileMenu}>
-              <img src={logo} alt="SIMBA Logo" className="w-12 h-12" />
-              <span className="font-bold text-[20px]">SIMBA</span>
+              <img src={logo} alt="SIGIZI Logo" className="w-12 h-12" />
+              <span className="font-bold text-[20px]">SIGIZI</span>
             </Link>
           </div>
 

@@ -17,7 +17,7 @@ import IconProfile from "../../assets/icon_profile.png";
 import { useAuth } from '../../hooks/useAuth';
 import { getSPPGById, updateMyProfile } from '../../services/sppgService';
 import { getNotificationsBySppgId } from '../../services/notificationService';
-import { createSppgMealDocumentation, getSppgMealDocumentation, getSppgMenus, uploadNutritionCsv, uploadWeeklyMenuCsv } from '../../services/sppgDashboardService';
+import { createSppgMealDocumentation, getSppgMealDocumentation, getSppgMenus, uploadNutritionCsv, uploadWeeklyMenuCsv, getCvAnalysis } from '../../services/sppgDashboardService';
 import { uploadProfileImage } from '../../services/mediaService';
 import { formatNumberValue, getDisplayValue } from '../../utils/display';
 import { resolveImageUrl } from '../../utils/imageUrl';
@@ -95,6 +95,105 @@ const parseCsvPreview = async (file) => {
     };
   });
 };
+
+function CVAnalysisModal({ isOpen, onClose, data, isLoading }) {
+  if (!isOpen) return null;
+
+  let parsedFoods = [];
+  try {
+    parsedFoods = typeof data?.detectedFoods === 'string' ? JSON.parse(data.detectedFoods) : (data?.detectedFoods || []);
+  } catch (e) {
+    parsedFoods = [];
+  }
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-sm">
+      <div className="w-full max-w-lg bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        <div className="bg-slate-50 p-4 border-b border-slate-100 flex justify-between items-center">
+          <h3 className="font-bold text-slate-800 flex items-center gap-2">
+            <span className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-lg">🤖</span>
+            Hasil Analisis AI (CV)
+          </h3>
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 font-bold p-2">✕</button>
+        </div>
+        
+        <div className="p-5 flex-1 overflow-y-auto">
+          {isLoading || !data ? (
+            <div className="py-12 text-center flex flex-col items-center justify-center">
+              <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+              <p className="text-sm font-semibold text-slate-500">Memuat hasil analisis CV...</p>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {/* Score card */}
+              <div className={`p-4 rounded-xl border ${data.isFlagged ? 'bg-red-50 border-red-100' : 'bg-emerald-50 border-emerald-100'} flex items-center justify-between`}>
+                <div>
+                  <p className={`text-sm font-bold ${data.isFlagged ? 'text-red-700' : 'text-emerald-700'}`}>Tingkat Kecocokan Menu</p>
+                  <p className={`text-xs mt-1 ${data.isFlagged ? 'text-red-600' : 'text-emerald-600'}`}>
+                    {data.isFlagged ? 'Terindikasi tidak sesuai dengan menu yang dilaporkan.' : 'Sesuai dengan menu yang dilaporkan.'}
+                  </p>
+                </div>
+                <div className={`text-3xl font-black ${data.isFlagged ? 'text-red-600' : 'text-emerald-600'}`}>
+                  {Number(data.matchScore).toFixed(0)}%
+                </div>
+              </div>
+
+              {data.flagReason && (
+                <div className="p-3 bg-red-100 text-red-700 rounded-lg text-sm font-medium border border-red-200">
+                  ⚠️ {data.flagReason}
+                </div>
+              )}
+
+              {/* Detected Foods */}
+              <div>
+                <p className="text-sm font-bold text-slate-700 mb-3">Makanan Terdeteksi</p>
+                <div className="space-y-2">
+                  {parsedFoods.map((food, i) => (
+                    <div key={i} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg border border-slate-100">
+                      <div>
+                        <p className="font-semibold text-slate-800 capitalize">{food.name}</p>
+                        <p className="text-xs text-slate-500 font-medium">{food.portionGrams} gram</p>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-xs font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded-full">
+                          {(food.confidence * 100).toFixed(0)}% Yakin
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Nutrition */}
+              <div>
+                <p className="text-sm font-bold text-slate-700 mb-3">Estimasi Kandungan Gizi</p>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                  <div className="bg-orange-50 border border-orange-100 rounded-lg p-3 text-center">
+                    <p className="text-xl font-black text-orange-600">{Number(data.estimatedCalories).toFixed(0)}</p>
+                    <p className="text-[10px] font-bold text-orange-800 uppercase mt-1">Kalori</p>
+                  </div>
+                  <div className="bg-rose-50 border border-rose-100 rounded-lg p-3 text-center">
+                    <p className="text-xl font-black text-rose-600">{Number(data.estimatedProtein).toFixed(1)}g</p>
+                    <p className="text-[10px] font-bold text-rose-800 uppercase mt-1">Protein</p>
+                  </div>
+                  <div className="bg-amber-50 border border-amber-100 rounded-lg p-3 text-center">
+                    <p className="text-xl font-black text-amber-600">{Number(data.estimatedFat).toFixed(1)}g</p>
+                    <p className="text-[10px] font-bold text-amber-800 uppercase mt-1">Lemak</p>
+                  </div>
+                  <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 text-center">
+                    <p className="text-xl font-black text-blue-600">{Number(data.estimatedCarbs).toFixed(1)}g</p>
+                    <p className="text-[10px] font-bold text-blue-800 uppercase mt-1">Karbo</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function LocationPickerMap({ value, onChange, children }) {
   const lat = Number(value?.lat);
@@ -182,6 +281,10 @@ const DashboardSPPG = () => {
   const [locationSearching, setLocationSearching] = useState(false);
   const [locationSearchError, setLocationSearchError] = useState('');
   const [mapTarget, setMapTarget] = useState(null);
+  
+  const [cvModalOpen, setCvModalOpen] = useState(false);
+  const [selectedCvData, setSelectedCvData] = useState(null);
+  const [isCvLoading, setIsCvLoading] = useState(false);
   const [editForm, setEditForm] = useState({
     name: '',
     address: '',
@@ -316,8 +419,44 @@ const DashboardSPPG = () => {
         img: resolveImageUrl(item?.photoUrl),
         note: getDisplayValue(item?.notes || 'Dokumentasi menu'),
         productionDate: getDisplayValue(item?.productionDate),
+        id: item?.id,
+        analysisStatus: item?.analysisStatus,
       }));
   }, [documentationItems, todayKey]);
+
+  useEffect(() => {
+    const hasPending = documentationItems.some(
+      (item) => item?.analysisStatus === 'pending' || item?.analysisStatus === 'processing'
+    );
+    if (!hasPending) return;
+    
+    const interval = setInterval(async () => {
+      try {
+        const res = await getSppgMealDocumentation();
+        const docs = Array.isArray(res?.data?.data) ? res.data.data : [];
+        setDocumentationItems(docs);
+      } catch (e) {
+        // ignore
+      }
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [documentationItems]);
+
+  const handleOpenCvModal = async (docId) => {
+    setCvModalOpen(true);
+    setIsCvLoading(true);
+    setSelectedCvData(null);
+    try {
+      const res = await getCvAnalysis(docId);
+      setSelectedCvData(res?.data?.data);
+    } catch (e) {
+      console.error(e);
+      setSelectedCvData(null);
+    } finally {
+      setIsCvLoading(false);
+    }
+  };
   const feedbackItems =
     notifications.length > 0
       ? notifications.slice(0, 3).map((item) => ({
@@ -681,11 +820,18 @@ const DashboardSPPG = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 font-sans text-gray-900 flex flex-col">
+      <CVAnalysisModal
+        isOpen={cvModalOpen}
+        onClose={() => setCvModalOpen(false)}
+        data={selectedCvData}
+        isLoading={isCvLoading}
+      />
+      
       <nav className="sticky top-0 z-40 bg-white shadow w-full">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-[52px]">
           <div className="flex items-center gap-2.5">
-            <img src={logo} alt="SIMBA Logo" className="w-9 h-9" />
-            <span className="font-bold text-[20px] text-[#1a2233] tracking-wide">SIMBA</span>
+            <img src={logo} alt="SIGIZI Logo" className="w-9 h-9" />
+            <span className="font-bold text-[20px] text-[#1a2233] tracking-wide">SIGIZI</span>
           </div>
           <div className="flex items-center gap-[18px]">
             <button
@@ -1080,8 +1226,27 @@ const DashboardSPPG = () => {
                       </div>
                       <div className="p-3">
                         <p className="text-sm font-semibold text-blue-500">{getDisplayValue(item.school)}</p>
+                        <p className="text-xs text-gray-400 mb-2">{getDisplayValue(item.time)}</p>
+                        
+                        {item.analysisStatus === 'pending' || item.analysisStatus === 'processing' ? (
+                          <div className="flex items-center gap-1.5 px-2 py-1 bg-slate-100 text-slate-600 rounded-md text-[10px] font-bold w-fit mb-2 border border-slate-200">
+                            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
+                            Analyzing CV...
+                          </div>
+                        ) : item.analysisStatus === 'completed' ? (
+                          <button 
+                            onClick={() => handleOpenCvModal(item.id)}
+                            className="flex items-center gap-1.5 px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 transition-colors rounded-md text-[10px] font-bold w-fit mb-2 cursor-pointer"
+                          >
+                            <span>🤖</span> Hasil AI
+                          </button>
+                        ) : item.analysisStatus === 'failed' ? (
+                          <div className="flex items-center gap-1.5 px-2 py-1 bg-red-50 text-red-600 rounded-md text-[10px] font-bold w-fit mb-2 border border-red-100">
+                            <span>❌</span> CV Gagal
+                          </div>
+                        ) : null}
+
                         <p className="mt-1 line-clamp-2 text-xs text-slate-500">{getDisplayValue(item.note)}</p>
-                        <p className="text-xs text-gray-400">{getDisplayValue(item.time)}</p>
                       </div>
                     </div>
                   ))}
@@ -1165,8 +1330,8 @@ const DashboardSPPG = () => {
       <footer className="bg-white border-t mt-auto">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between py-5">
           <div className="flex items-center gap-2.5">
-            <img src={logo} alt="SIMBA Logo" className="w-9 h-9" />
-            <span className="font-bold text-[20px] text-[#1a2233] tracking-wide">SIMBA</span>
+            <img src={logo} alt="SIGIZI Logo" className="w-9 h-9" />
+            <span className="font-bold text-[20px] text-[#1a2233] tracking-wide">SIGIZI</span>
           </div>
           <div className="flex gap-6 text-sm text-slate-400">
             <span className="cursor-not-allowed">Pusat Dukungan</span>

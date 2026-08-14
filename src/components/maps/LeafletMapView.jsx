@@ -45,10 +45,17 @@ function getFallbackImageById(type, id) {
   return images[imageIndex];
 }
 
-function getMarkerIcon(type, isSelected) {
+function getMarkerIcon(item, isSelected) {
+  const type = item.type;
+  let statusClass = `map-dot-${type}`;
+  if (type === 'sppg') {
+    if (item.verificationStatus === 'flagged') statusClass = 'map-dot-sppg-flagged';
+    else if (item.verificationStatus === 'partial') statusClass = 'map-dot-sppg-partial';
+  }
+
   return L.divIcon({
     className: "",
-    html: `<span class="map-dot map-dot-${type} ${isSelected ? "map-dot-selected" : ""}">${
+    html: `<span class="map-dot ${statusClass} ${isSelected ? "map-dot-selected" : ""}">${
       type === "sppg"
         ? '<span class="map-dot-glyph">D</span>'
         : '<span class="map-dot-glyph">S</span>'
@@ -205,7 +212,7 @@ function MarkerLayer({ items, selectedItem, onSelect }) {
         <Marker
           key={`${item.type}-${item.id}`}
           position={getPosition(item)}
-          icon={getMarkerIcon(item.type, selectedItem?.id === item.id)}
+          icon={getMarkerIcon(item, selectedItem?.id === item.id)}
           eventHandlers={{
             click: (event) => {
               event.originalEvent?.stopPropagation?.();
@@ -305,7 +312,15 @@ function Legend() {
       <div className="space-y-2 text-sm font-semibold text-slate-700">
         <div className="flex items-center gap-2">
           <span className="h-3 w-3 rounded-full bg-emerald-500" />
-          Dapur SPPG
+          Dapur SPPG (Terverifikasi)
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="h-3 w-3 rounded-full bg-yellow-500" />
+          Dapur SPPG (Parsial/Proses)
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="h-3 w-3 rounded-full bg-red-500" />
+          Dapur SPPG (Flagged / Indikasi Fraud)
         </div>
         <div className="flex items-center gap-2">
           <span className="h-3 w-3 rounded-full bg-blue-500" />

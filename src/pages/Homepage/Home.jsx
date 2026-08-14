@@ -8,7 +8,7 @@ import FAQ from "./components/FAQ";
 
 export default function Home() {
   useEffect(() => {
-    document.title = "SIMBA - Transparansi Program MBG";
+    document.title = "SIGIZI - Transparansi Program MBG";
   }, []);
 
   return (
