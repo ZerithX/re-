@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllSekolah } from "../services/sekolahService";
-import { getAllSPPG } from "../services/sppgService";
-import { mapSchoolForMapPage, mapSppgForMapPage } from "../utils/mapsPageMapper";
+import { getPublicMapData } from "../services/sppgService";
 
 export function useMapsPage() {
   const [sppgItems, setSppgItems] = useState([]);
@@ -12,25 +10,31 @@ export function useMapsPage() {
   useEffect(() => {
     const loadMapData = async () => {
       try {
-        const [sppgResponse, schoolResponse] = await Promise.all([
-          getAllSPPG(),
-          getAllSekolah(),
-        ]);
+        const response = await getPublicMapData();
+        const sppgData = Array.isArray(response?.data?.data?.sppg) ? response.data.data.sppg : [];
+        const schoolData = Array.isArray(response?.data?.data?.schools) ? response.data.data.schools : [];
 
-        const sppgData = Array.isArray(sppgResponse?.data?.data)
-          ? sppgResponse.data.data
-          : Array.isArray(sppgResponse?.data)
-          ? sppgResponse.data
-          : [];
+        // Direct mapping since the backend already formats most fields
+        const mappedSppg = sppgData.map(item => ({
+          ...item,
+          name: item.name,
+          lat: Number(item.lat),
+          lng: Number(item.lng),
+          verificationStatus: item.verificationStatus,
+          location: item.address || 'Alamat tidak tersedia',
+          capacity: `${item.capacityPerDay || 0} porsi / hari`,
+          info: `${item.staffCount || 0} staf`,
+        }));
 
-        const schoolData = Array.isArray(schoolResponse?.data?.data)
-          ? schoolResponse.data.data
-          : Array.isArray(schoolResponse?.data)
-          ? schoolResponse.data
-          : [];
-
-        const mappedSppg = sppgData.map(mapSppgForMapPage);
-        const mappedSchool = schoolData.map(mapSchoolForMapPage);
+        const mappedSchool = schoolData.map(item => ({
+          ...item,
+          name: item.name,
+          lat: Number(item.lat),
+          lng: Number(item.lng),
+          location: item.address || 'Alamat tidak tersedia',
+          capacity: `${item.studentCount || 0} siswa`,
+          info: 'Sekolah Penerima',
+        }));
 
         setSppgItems(mappedSppg);
         setSchoolItems(mappedSchool);

@@ -98,14 +98,14 @@ export default function Login() {
                   Membangun Kepercayaan Melalui Transparansi
                 </h2>
                 <p className="m-0 text-base leading-[26px] text-[#424752]">
-                  Platform SIMBA membantu pengelolaan distribusi makanan sekolah yang transparan dan efisien untuk operasional harian Anda.
+                  Platform SIGIZI membantu pengelolaan distribusi makanan sekolah yang transparan dan efisien untuk operasional harian Anda.
                 </p>
               </div>
             </div>
 
             <div className="mt-4 flex flex-col gap-2.5">
               <p className="m-0 text-xs font-semibold text-[#424752]">
-                © 2026 SIMBA - Capstone Kelompok 11 - All rights reserved.
+                © 2026 SIGIZI - Capstone Kelompok 11 - All rights reserved.
               </p>
               <div className="flex flex-wrap gap-4">
                 {footerLinks.map((label) => (
@@ -122,9 +122,9 @@ export default function Login() {
           <div className="flex w-full max-w-[420px] flex-col gap-7">
             <div className="flex flex-col gap-1.5">
               <div className="flex items-center gap-3.5">
-                <img src={Logo} alt="SIMBA" className="h-[42px] w-[52px] object-contain" />
+                <img src={Logo} alt="SIGIZI" className="h-[42px] w-[52px] object-contain" />
                 <span className="font-['Public_Sans'] text-2xl font-bold uppercase tracking-[-0.5px] text-slate-900">
-                  SIMBA
+                  SIGIZI
                 </span>
               </div>
               <p className="m-0 text-lg font-bold text-[#424752]">Platform Layanan Publik</p>

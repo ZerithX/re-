@@ -11,11 +11,11 @@ function Footer() {
     <footer className="bg-[#0a2551] text-white py-16 px-10">
       <div className="w-full grid grid-cols-1 md:grid-cols-4 gap-12">
         
-        {/* Kolom 1: SIMBA Logo & Deskripsi */}
+        {/* Kolom 1: SIGIZI Logo & Deskripsi */}
         <div className="space-y-3">
           <div className="flex items-center gap-3">
-            <img src={logo} alt="Logo SIMBA" className="w-16 h-auto object-contain" />
-            <h2 className="text-xl font-bold">SIMBA</h2>
+            <img src={logo} alt="Logo SIGIZI" className="w-16 h-auto object-contain" />
+            <h2 className="text-xl font-bold">SIGIZI</h2>
           </div>
           <p className="text-sm text-slate-300 mt-3 leading-relaxed pr-4">
             Mengawal kualitas nutrisi generasi masa depan melalui keterbukaan informasi dan pengawasan publik berbasis teknologi digital.

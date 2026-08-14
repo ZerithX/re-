@@ -353,8 +353,8 @@ const NotificationSPPG = () => {
       <nav className="sticky top-0 z-40 bg-white shadow w-full">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-[52px]">
           <div className="flex items-center gap-2.5">
-            <img src={logo} alt="SIMBA Logo" className="w-9 h-9" />
-            <span className="font-bold text-[20px] text-[#1a2233] tracking-wide">SIMBA</span>
+            <img src={logo} alt="SIGIZI Logo" className="w-9 h-9" />
+            <span className="font-bold text-[20px] text-[#1a2233] tracking-wide">SIGIZI</span>
           </div>
           <div className="flex items-center gap-[18px]">
             <button
@@ -550,8 +550,8 @@ const NotificationSPPG = () => {
       <footer className="bg-white border-t mt-auto">
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between py-5">
           <div className="flex items-center gap-2.5">
-            <img src={logo} alt="SIMBA Logo" className="w-9 h-9" />
-            <span className="font-bold text-[20px] text-[#1a2233] tracking-wide">SIMBA</span>
+            <img src={logo} alt="SIGIZI Logo" className="w-9 h-9" />
+            <span className="font-bold text-[20px] text-[#1a2233] tracking-wide">SIGIZI</span>
           </div>
           <div className="flex gap-6 text-sm text-slate-500">
             <a href="#" className="hover:underline">Pusat Dukungan</a>

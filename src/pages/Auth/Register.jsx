@@ -260,7 +260,7 @@ export default function Register() {
           </div>
 
           <div className="text-xs text-slate-400 space-y-1">
-            <p>(c) 2026 SIMBA | Capstone Kelompok 11 | All rights reserved.</p>
+            <p>(c) 2026 SIGIZI | Capstone Kelompok 11 | All rights reserved.</p>
             <div className="flex gap-3">
               <span className="hover:text-blue-500 cursor-pointer">Kebijakan Privasi</span>
               <span className="hover:text-blue-500 cursor-pointer">Ketentuan Layanan</span>
@@ -272,7 +272,7 @@ export default function Register() {
         <div className="w-full md:w-7/12 flex flex-col px-8 py-8 overflow-y-auto max-h-screen bg-gradient-to-b from-white to-slate-50/70">
           <div className="mb-5 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm">
             <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-1">Pilih Peran Institusi</p>
-            <h1 className="text-lg font-extrabold text-slate-900 leading-tight">Form Pendaftaran SIMBA</h1>
+            <h1 className="text-lg font-extrabold text-slate-900 leading-tight">Form Pendaftaran SIGIZI</h1>
             <p className="mt-1 text-xs text-slate-500">
               Lengkapi data institusi untuk pengajuan akun. Aktivasi dilakukan setelah verifikasi admin.
             </p>
@@ -422,7 +422,7 @@ export default function Register() {
             <input type="checkbox" id="agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 accent-blue-600" />
             <label htmlFor="agree" className="text-xs text-slate-500 leading-relaxed">
               Saya menyatakan bahwa data yang diberikan adalah benar dan bersedia mengikuti protokol operasional
-              <span className="text-blue-600 font-semibold"> SIMBA.</span>
+              <span className="text-blue-600 font-semibold"> SIGIZI.</span>
             </label>
           </div>
 
